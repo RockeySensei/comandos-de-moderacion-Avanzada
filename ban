@@ -1,0 +1,52 @@
+trigger !ban
+
+$nomention
+$allowMention
+$if[$isSlash==false]
+$onlyPerms[ban;admin;:x: Sólo administradores y personas con el permiso `Banear miembros` están facultados para usar este comando.]
+$if[$argCount[$message]==0]
+$title[Comando de baneo.]
+$description[Con este comando puedes banear a gente que no respete las reglas de tu servidor.
+**Usos:**
+Normal: *ban @usuario <razón (opcional)>*
+Slash: */ban @usuario <razón (opcional)>*]
+$color[$random[1;999999]]
+$endif
+$if[$argCount[$message]>=1]
+$suppressErrors[:x: Ocurrió algo inesperado y el comando no se pudo ejecutar.]
+$onlyBotPerms[ban;:x: O-oye, me hace falta el permiso `Banear miembros` para poder banear.]
+$onlyIf[$mentioned[1]!=$authorID;:x: No te puedes banear a ti mismo.]
+$onlyIf[$mentioned[1]!=$botID;:x: No me puedo banear a mi mismo.]
+$onlyIf[$rolePosition[$highestRole[$authorID]]<$rolePosition[$highestRole[$findUser[$message[1]]]];:x: No puedes banear a alguien con un rol más alto que el tuyo.]
+$onlyIf[$rolePosition[$highestRole[$botID]]<$rolePosition[$highestRole[$findUser[$message[1]]]];:x: No puedo banear a alguien con un rol más alto que el mío.]
+$ban[$replaceText[$replaceText[$checkCondition[$noMentionMessage==];true;No especificado;-1];false;$noMentionMessage;-1]]
+$thumbnail[$userAvatar[$findUser[$message[1]]]]
+$title[🚫 Usuario baneado.]
+$description[$username[$findUser[$message[1]]] fue baneado del servidor.]
+$addField[ID:;$findUser[$message[1]]]
+$addField[Razón:;$replaceText[$replaceText[$checkCondition[$message[2]==];true;No especificado;-1];false;$replaceText[$message;$message[1];;-1];-1]]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$color[FF0000]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$endif
+$endif
+$if[$isSlash==true]
+$suppressErrors[:x: Ocurrió algo inesperado y el comando no se pudo ejecutar.]
+$onlyPerms[ban;admin;:x: Sólo administradores y gente con el permiso `Banear miembros` están facultados para usar este comando.]
+$onlyBotPerms[ban;:x: O-oye, me hace falta el permiso `Banear miembros` para poder banear.]
+$onlyIf[$findUser[$message[1;usuario]]!=$authorID;:x: No te puedes banear a ti mismo.]
+$onlyIf[$findUser[$message[1;usuario]]!=$botID;:x: No me puedo banear a mi mismo.]
+$onlyIf[$rolePosition[$highestRole[$authorID]]<$rolePosition[$highestRole[$findUser[$message[1;usuario]]]];:x: No puedes banear a alguien con un rol más alto que el tuyo.]
+$onlyIf[$rolePosition[$highestRole[$botID]]<$rolePosition[$highestRole[$findUser[$message[1;usuario]]]];:x: No puedo banear a alguien con un rol más alto que el mío.]
+$banID[$replaceText[$replaceText[$checkCondition[$message[2;razon]==];true;No especificado;-1];false;$replaceText[$message;$message[1;usuario]; ;1]];$message[1;usuario]]
+$thumbnail[$userAvatar[$findUser[$message[1;usuario]]]]
+$title[🚫 Usuario baneado.]
+$description[$username[$findUser[$message[1;usuario]]] fue baneado del servidor.]
+$addField[ID:;$findUser[$message[usuario]]]
+$addField[Razón:;$replaceText[$replaceText[$checkCondition[$message[2;razon]==];true;No especificado;-1];false;$replaceText[$message;$message[1;usuario]; ;1]]]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$color[FF0000]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$endif
