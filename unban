@@ -1,0 +1,55 @@
+trigger !unban
+
+
+$nomention
+$allowMention
+$embedSuppressErrors[¡Ocurrió algo inesperado!;Ocurrió un error al tratar de ejecutar el comando.;FF0000;;$serverName[$guildID];$serverIcon]
+$if[$isSlash==false]
+$onlyPerms[ban;admin;:x: Sólo administradores y personas con el permiso `Banear miembros` están facultados para usar este comando.]
+$if[$argCount[$message]==0]
+$title[Comando de desbaneo.]
+$description[Con este comando puedes desbanear a gente baneada.
+**Usos:**
+Normal: *unban <nombre de usuario>*, *unban <ID de usuario>*
+Slash: */ban <ID de Usuario>*]
+$color[$random[1;999999]]
+$endif
+$if[$argCount[$message]>=1]
+$onlyBotPerms[ban;:x: O-oye, me hace falta el permiso `Banear miembros` para poder desbanear.]
+$if[$isNumber[$message]==true]
+$onlyIf[$userExists[$message[1]]==true;:x: Ese miembro no existe.]
+$onlyIf[$isBanned[$message[1]]==true;:x: Hey, ese miembro no está baneado.]
+$unbanID[$message[1]]
+$title[✅ Usuario desbaneado.]
+$description[Un usuario fue desbaneado del servidor.]
+$addField[ID:;$findUser[$message[1]]]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$color[82E0AA]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$else
+$unban[$findUser[$message]]
+$thumbnail[$serverIcon]
+$title[✅ Usuario desbaneado.]
+$description[$message fue desbaneado del servidor.]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$color[82E0AA]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$endif
+$endif
+$endif
+$if[$isSlash==true]
+$suppressErrors[:x: Ocurrió algo inesperado y el comando no se pudo ejecutar.]
+$onlyPerms[ban;admin;:x: Sólo administradores y gente con el permiso `Banear miembros` están facultados para usar este comando.]
+$onlyBotPerms[ban;:x: O-oye, me hace falta el permiso `Banear miembros` para poder desbanear.]
+$onlyIf[$userExists[$findUser[$message[1;id]]]==true;:x: Ese miembro no existe.]
+$onlyIf[$isBanned[$message[1;id]]==true;:x: Hey, este miembro ya está baneado.]
+$unbanID[$message[1;id]]
+$title[✅ Usuario desbaneado.]
+$description[$message[1;id] fue desbaneado del servidor.]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$color[82E0AA]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$endif
