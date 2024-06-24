@@ -1,0 +1,57 @@
+trigger !untimeout
+
+
+$if[$isSlash==false]
+$nomention
+$allowMention
+$onlyPerms[moderatemembers;admin;:x: Sólo administradores y personas con el permiso `Moderar miembros` están facultados para usar este comando.]
+$if[$argCount[$message]==0]
+$title[Comando de anulación de aislamiento.]
+$description[Con este comando puedes anular el aislamiento de un usuario.
+**Usos:**
+Normal: *untimeout <@usuario/ID>*
+Slash: *untimeout <@usuario>*]
+$endif
+$if[$argCount[$message]>=1]
+$onlyBotPerms[moderatemembers;:x: O-oye, necesito el permiso `Moderar miembros` para anular el aislamiento.]
+$if[$isNumber[$message]==true]
+$onlyIf[$message[1]!=$authorID;:x: No puedes anular el aislamiento para ti mismo.]
+$onlyIf[$message[1]!=$botID;:x: No puedo anular un aislamiento para mí.]
+$untimeout[$message[1]]
+$title[✅ Aislamiento de usuario anulado.]
+$description[El aislamiento de $username[$message[1]], fue removido.]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$thumbnail[$userAvatar[$message[1]]]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$color[$random[1;999999]]
+$else
+$onlyIf[$mentioned[1]!=$authorID;:x: No puedes anular el aislamiento para ti mismo.]
+$onlyIf[$mentioned[1]!=$botID;:x: No puedo anular un aislamiento para mí.]
+$untimeout[$mentioned[1]]
+$title[✅ Aislamiento de usuario anulado.]
+$description[El aislamiento de $username[$mentioned[1]], fue removido.]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$thumbnail[$userAvatar[$mentioned[1]]]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$color[$random[1;999999]]
+$endif
+$endif
+$endif
+$if[$isSlash==true]
+$onlyPerms[moderatemembers;admin;:x: Sólo administradores y personas con el permiso `Moderar miembros` están facultados para usar este comando.]
+$onlyBotPerms[moderatemembers;:x: O-oye, me hace falta el permiso `Moderar miembros` para poder aislar.]
+$nomention
+$suppressErrors[:x: Ocurrió un error y no se pudo ejecutar el comando.]
+$onlyIf[$findUser[$message[1;usuario]]!=$authorID;:x: No puedes anular el aislamiento para ti mismo.]
+$onlyIf[$findUser[$message[1;usuario]]!=$botID;:x: No puedo anular un aislamiento para mí.]
+$untimeout[$findUser[$message[1;usuario]]]
+$title[✅ Aislamiento de usuario anulado.]
+$description[El aislamiento de $username[$findUser[$message[1;usuario]]], fue removido.]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$thumbnail[$userAvatar[$findUser[$message[1;usuario]]]]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$color[$random[1;999999]]
+$endif
