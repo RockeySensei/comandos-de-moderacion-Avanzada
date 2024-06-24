@@ -1,0 +1,36 @@
+trigger !purge
+
+
+$nomention
+$if[$isSlash==false]
+$suppressErrors[:x: Debido a limitaciones de Discord, no puedo eliminar mensajes de más de 2 semanas de antigüedad.]
+$onlyPerms[managemessages; Sólo las personas con el permiso `Gestionar mensajes` están facultadas para usar este comando.]
+$onlyBotPerms[managemessages;⚠️ O-oye, necesito el permiso de `Gestionar mensajes` para eliminar mensajes.]
+$onlyIf[$isNumber[$message[1]]==true;:x: Eso no es un número.]
+$onlyIf[$message[1]>1;⚠️ Puedo eliminar un mínimo de 2 mensajes.]
+$onlyIf[$message[1]<=100;⚠️ Sólo puedo eliminar un máximo de 100 mensajes.]
+$argsCheck[1;:x: No pusiste cuántos mensajes quieres eliminar.]
+$deletecommand
+$clear[$message[1]]
+$title[✅ Mensajes eliminados.]
+$description[Se purgó el chat, y se eliminaron $message[1] mensajes.]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$color[$random[1;999999]]
+$deleteIn[5s]
+$endif
+$if[$isSlash==true]
+$suppressErrors[:x: Debido a limitaciones de Discord, no puedo eliminar mensajes de más de 2 semanas de antigüedad.]
+$onlyPerms[managemessages; Sólo las personas con el permiso `Gestionar mensajes` están facultadas para usar este comando.]
+$onlyBotPerms[managemessages;⚠️ O-oye, necesito el permiso de `Gestionar mensajes` para eliminar mensajes.]
+$onlyIf[$isNumber[$message[1;cantidad]]==true;:x: Eso no es un número.]
+$onlyIf[$message[1;cantidad]>1;⚠️ Puedo eliminar un mínimo de 2 mensajes.]
+$onlyIf[$message[1;cantidad]<=100;⚠️ Sólo puedo eliminar un máximo de 100 mensajes.]
+$clear[$message[1;cantidad]]
+$title[✅ Mensajes eliminados.]
+$description[Se purgó el chat, y se eliminaron $message[1;cantidad] mensajes.]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$color[$random[1;999999]]
+$deleteIn[5s]
+$endif
