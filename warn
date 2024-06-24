@@ -1,0 +1,43 @@
+trigger !warn
+
+
+$nomention
+$allowMention
+$varExistError[advertencias;:warning: Debes agregar una variable llamada advertencias con valor `0`.]
+$embedSuppressErrors[¡Ocurrió algo inesperado!;Ocurrió un error al tratar de ejecutar el comando.;FF0000;;$serverName[$guildID];$serverIcon]
+$onlyPerms[kick;:x: Necesitas el permiso `Expulsar miembros`.]
+$if[$isSlash==false]
+$onlyIf[$findUser[$message[1];no]!=;:x: Debes mencionar o poner la ID de algún usuario.]
+$onlyIf[$userExists[$findUser[$message[1];no]]==true;:x: | No se pudo encontrar al usuario.]
+$onlyIf[$findUser[$message[1];no]!=$authorID;:x: No te puedes advertir a ti mismo.]
+$onlyIf[$findUser[$message[1];no]!=$botID;:x: ¿Porqué me advertirías?.]
+$onlyIf[$isBot[$findUser[$message[1];no]]==false;:x: No puedes advertir bots.]
+$onlyIf[$rolePosition[$highestRole[$authorID]]<$rolePosition[$highestRole[$findUser[$message[1]]]];:x: No puedes advertir a alguien con un rol más alto que el tuyo.]
+$onlyIf[$rolePosition[$highestRole[$botID]]<$rolePosition[$highestRole[$findUser[$message[1];no]]];:x: No puedo advertir a alguien con un rol más alto que el mío.]
+$setUserVar[advertencias;$sum[$getUserVar[advertencias;$findUser[$message[1];no]];1];$findUser[$message[1];no]]
+$title[Usuario advertido]
+$thumbnail[$userAvatar[$findUser[$message[1];no]]]
+$description[Se advirtió a $username[$findUser[$message[1];no]]#$discriminator[$findUser[$message[1];no]].]
+$addField[Número de advertencias;$getUserVar[advertencias;$findUser[$message[1];no]]]
+$addField[Razón;$replaceText[$replaceText[$checkCondition[$message[2]!=];true;$replaceText[$message;$message[1];;-1];-1];false;No especificado.;-1]]
+$addField[Responsable;$username[$authorID]#$discriminator[$authorID]]
+$elseif[$isSlash==true]
+$onlyIf[$findUser[$message[1;usuario];no]!=;:x: Debes mencionar o poner la ID de algún usuario.]
+$onlyIf[$userExists[$findUser[$message[1;usuario];no]]==true;:x: | No se pudo encontrar al usuario.]
+$onlyIf[$findUser[$message[1;usuario];no]!=$authorID;:x: No te puedes advertir a ti mismo.]
+$onlyIf[$findUser[$message[1;usuario];no]!=$botID;:x: ¿Porqué me advertirías?.]
+$onlyIf[$isBot[$findUser[$message[1;usuario];no]]==false;:x: No puedes advertir bots.]
+$onlyIf[$rolePosition[$highestRole[$authorID]]<$rolePosition[$highestRole[$findUser[$message[1;usuario]]]];:x: No puedes advertir a alguien con un rol más alto que el tuyo.]
+$onlyIf[$rolePosition[$highestRole[$botID]]<$rolePosition[$highestRole[$findUser[$message[1;usuario];no]]];:x: No puedo advertir a alguien con un rol más alto que el mío.]
+$setUserVar[advertencias;$sum[$getUserVar[advertencias;$findUser[$message[1;usuario];no]];1];$findUser[$message[1;usuario];no]]
+$title[Usuario advertido]
+$thumbnail[$userAvatar[$findUser[$message[1;usuario];no]]]
+$description[Se advirtió a $username[$findUser[$message[1;usuario];no]]#$discriminator[$findUser[$message[1];no]].]
+$addField[Número de advertencias;$getUserVar[advertencias;$findUser[$message[1;usuario];no]]]
+$addField[Razón;$replaceText[$replaceText[$checkCondition[$message[2;razon]!=];true;$replaceText[$message;$message[1;usuario];;-1];-1];false;No especificado.;-1]]
+$addField[Responsable;$username[$authorID]#$discriminator[$authorID]]
+$endif
+$color[FF0000]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$addTimestamp
