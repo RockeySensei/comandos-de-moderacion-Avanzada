@@ -1,5 +1,6 @@
 trigger !ban
 
+
 $nomention
 $allowMention
 $if[$isSlash==false]
