@@ -1,0 +1,53 @@
+trigger !kick
+
+
+$nomention
+$allowMention
+$if[$isSlash==false]
+$onlyPerms[admin;kick;:x: Sólo administradores y gente con el permiso `Expulsar miembros` están facultados para usar este comando.]
+$if[$argCount[$message]==0]
+$title[Comando de expulsión.]
+$description[Con este comando puedes expulsar a gente que no respete las reglas de tu servidor.
+**Usos:**
+Normal: *kick @usuario <razón (opcional)>*
+Slash: */kick @usuario <razón (opcional)>*]
+$color[$random[1;999999]]
+$endif
+$if[$argCount[$message]>=1]
+$suppressErrors[:x: Ocurrió algo inesperado y el comando no se pudo ejecutar.]
+$onlyBotPerms[kick;:x: O-oye, me hace falta el permiso `Expulsar miembros` para poder expulsar.]
+$onlyIf[$findUser[$message[1]]!=$authorID;:x: No te puedes expulsar a ti mismo.]
+$onlyIf[$findUser[$message[1]]!=$botID;:x: No me puedo expulsar a mi mismo.]
+$onlyIf[$rolePosition[$highestRole[$authorID]]<$rolePosition[$highestRole[$findUser[$message[1]]]];:x: No puedes expulsar a alguien con un rol más alto que el tuyo.]
+$onlyIf[$rolePosition[$highestRole[$botID]]<$rolePosition[$highestRole[$findUser[$message[1]]]];:x: No puedo expulsar a alguien con un rol más alto que el mío.]
+$kick[$mentioned[1];$replaceText[$replaceText[$checkCondition[$message[2]==];true;No especificado;-1];false;$replaceText[$message;$message[1];;-1];-1]]
+$thumbnail[$userAvatar[$findUser[$message[1]]]]
+$title[🚫 Usuario expulsado.]
+$description[$username[$findUser[$message[1]]] fue expulsado del servidor.]
+$addField[ID:;$findUser[$message[1]]]
+$addField[Razón:;$replaceText[$replaceText[$checkCondition[$message[2]==];true;No especificado;-1];false;$replaceText[$message;$message[1];;-1];-1]]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$color[FF0000]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$endif
+$endif
+$if[$isSlash==true]
+$suppressErrors[:x: Ocurrió algo inesperado y el comando no se pudo ejecutar.]
+$onlyPerms[admin;kick;:x: Sólo administradores y gente con el permiso `Expulsar miembros` están facultados para usar este comando.]
+$onlyBotPerms[kick;:x: O-oye, me hace falta el permiso `Expulsar miembros` para poder expulsar.]
+$onlyIf[$findUser[$message[1;usuario]]!=$authorID;:x: No te puedes expulsar a ti mismo.]
+$onlyIf[$findUser[$message[1;usuario]]!=$botID;:x: No me puedo expulsar a mi mismo.]
+$onlyIf[$rolePosition[$highestRole[$authorID]]<$rolePosition[$highestRole[$findUser[$message[1;usuario]]]];:x: No puedes aislar a alguien con un rol más alto que el tuyo.]
+$onlyIf[$rolePosition[$highestRole[$botID]]<$rolePosition[$highestRole[$findUser[$message[1;usuario]]]];:x: No puedo expulsar a alguien con un rol más alto que el mío.]
+$kick[$findUser[$message[1;usuario]];$replaceText[$replaceText[$checkCondition[$message[2;razon]==];true;No especificado;-1];false;$replaceText[$message;$message[1;usuario]; ;1]]]
+$thumbnail[$userAvatar[$findUser[$message[1;usuario]]]]
+$title[🚫 Usuario expulsado.]
+$description[$username[$findUser[$message[1;usuario]]] fue expulsado del servidor.]
+$addField[ID:;$findUser[$message[usuario]]]
+$addField[Razón:;$replaceText[$replaceText[$checkCondition[$message[2;razon]==];true;No especificado;-1];false;$replaceText[$message;$message[1;usuario]; ;1]]]
+$addField[Admin/mod responsable:;$username[$authorID]#$discriminator[$authorID]]
+$color[FF0000]
+$footer[$serverName[$guildID]]
+$footerIcon[$serverIcon]
+$endif
